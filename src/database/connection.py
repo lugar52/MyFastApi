@@ -1,8 +1,8 @@
 
 from functools import lru_cache
 
-import mysql.connector
-from mysql.connector import MySQLConnection
+import mysql.connector 
+from mysql.connector import MySQLConnection 
 
 from fastapi import Depends
 
