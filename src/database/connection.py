@@ -1,22 +1,30 @@
 
-import os
+from functools import lru_cache
+
 import mysql.connector
 from mysql.connector import MySQLConnection
 
+from fastapi import Depends
 
-def get_connection() -> MySQLConnection:
+from config import Settings
+
+@lru_cache()
+def get_settings():
+    return Settings()
+
+def get_connection(settings: Settings = Depends(get_settings)) -> MySQLConnection:
+    print(settings.MYSQLUSER)
+    print(settings.MYSQLPASSWORD)
+    print(settings.MYSQLHOST)
+    print(settings.MYSQLDATABASE)
+    print(settings.MYSQLPORT)
+    
     return mysql.connector.connect(
-        host=os.getenv('MySQL.MYSQLHOST'),
-        user=os.getenv('MySQL.MYSQLUSER'),
-        password=os.getenv('MySQL.MYSQLPASSWORD'),
-        database=os.getenv('MySQL.MYSQLDATABASE'),
-        port=os.getenv('MySQL.MYSQLPORT',3306),
+        host=settings.MYSQLHOST,
+        user=settings.MYSQLUSER,
+        password=settings.MYSQLPASSWORD,
+        database=settings.MYSQLDATABASE,
+        port=settings.MYSQLPORT,
     )
 
-
-""" host=os.getenv('MYSQL_HOST'),
-user=os.getenv('MYSQL_USER'),
-password=os.getenv('MYSQL_PASS'),
-database=os.getenv('MYSQL_DB'),
-port=os.getenv('MYSQL_PORT',3306), """
 

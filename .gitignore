@@ -2,3 +2,6 @@ __pycache__
 .Fastapi_env/
 Fastapi_env/
 Fastapi_env/*
+
+.env
+.env.sample

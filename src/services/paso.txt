@@ -26,3 +26,21 @@ def mostrar_trillizo(id: int):
 @app.post("/trilli")
 def insertar_trilli(trilli: Trilli):
     return {"message": f"{trilli.nombre} ingresado"}
+
+# MYSQLHOST="autorack.proxy.rlwy.net"
+# MYSQLUSER="root"
+# MYSQLPASSWORD="MoDBbSQWrEiOOPuetNOFxVQdeaLpwkWc"
+# MYSQLDATABASE="railway"
+# MYSQLPORT="45787"
+
+# MYSQLHOST="localhost"
+# MYSQLUSER="root"
+# MYSQLPASSWORD="root"
+# MYSQLDATABASE="AMSA"
+# MYSQLPORT='3306'
+
+# mysql://root:MoDBbSQWrEiOOPuetNOFxVQdeaLpwkWc@autorack.proxy.rlwy.net:45787/railway
+# mysql://root:MoDBbSQWrEiOOPuetNOFxVQdeaLpwkWc@autorack.proxy.rlwy.net:45787/railway
+# jdbc:mysql://root:MoDBbSQWrEiOOPuetNOFxVQdeaLpwkWc@autorack.proxy.rlwy.net:45787/railway
+
+uvicorn main:app --reload

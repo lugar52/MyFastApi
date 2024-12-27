@@ -1,19 +1,10 @@
-import os
+from pydantic_settings import BaseSettings
 
-class Config:
-    SECRET_KEY = os.getenv('SECRET_KEY')
-
-
-class DevelopmentConfig():
-    AMBI = 'development'
-    #PORT="5432"
-    DEBUG = True 
-    #HOST = "34.168.253.122"
-    HOST = "192.168.1.26"
-    SECRET_KEY = os.getenv('SECRET_KEY')
-
-config = {
-    'development' : DevelopmentConfig 
-}
-
-
+class Settings(BaseSettings):
+    MYSQLHOST:str="autorack.proxy.rlwy.net"
+    MYSQLUSER:str="root"
+    MYSQLPASSWORD:str="MoDBbSQWrEiOOPuetNOFxVQdeaLpwkWc"
+    MYSQLDATABASE:str="railway"
+    MYSQLPORT:str="45787"
+    class Config:
+        env_file = ".env.sample"
