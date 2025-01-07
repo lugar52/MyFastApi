@@ -8,3 +8,14 @@ class Settings(BaseSettings):
     MYSQLPORT:str="45787"
     class Config:
         env_file = ".env.sample"
+
+
+""" class Settings(BaseSettings):
+    MYSQLHOST:str="localhost"
+    MYSQLUSER:str="root"
+    MYSQLPASSWORD:str="S2cr2t452"
+    MYSQLDATABASE:str="railway"
+    MYSQLPORT:str="3306"
+    class Config:
+        env_file = ".env.sample"
+ """

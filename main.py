@@ -15,10 +15,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
-app.include_router(perneria)
-app.include_router(equipos)
-
+app.include_router(perneria, prefix="/perneria")
+app.include_router(equipos, prefix="/equipos")
 
 @app.get("/")
 def read_root():

@@ -5,10 +5,11 @@ from mysql.connector import MySQLConnection
 from src.models.equipos import Equipos
 from src.services.querysEquipos import Querys_equipos
 
-router = APIRouter(prefix="/equipos", tags=["equipos"])
+router = APIRouter(tags=["equipos"])
 
 @router.get("/")
 def getS_items(db: MySQLConnection = Depends(get_connection)):
+    print("llegue a equipos")
     cursor = db.cursor(dictionary=True)
     query = Querys_equipos.QUERY_ALL_EQUIPOS
     cursor.execute(query)
