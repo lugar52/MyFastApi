@@ -36,13 +36,11 @@ def getS_items(db: MySQLConnection = Depends(get_connection)):
 @router.get("/get_item/{id}")
 def get_item(id: str, db: MySQLConnection = Depends(get_connection)):
     print("api/get_items")
-    print(id)
     try:
         cursor = db.cursor(dictionary=True)
         query = Querys_perneria.QUERY_PERNERIA
         query = query + " WHERE ID_PERNO = " + id + ";"
 
-        print(query)
         cursor.execute(query)
         equipo = cursor.fetchall()
         cursor.close()
@@ -66,7 +64,7 @@ def get_pendientes(db: MySQLConnection = Depends(get_connection)):
         query = query + " WHERE DIFERENCIA != 0"
         cursor.execute(query)
         equipos_pend = cursor.fetchall()
-        print(equipos_pend)
+        
         cursor.close()
         if not equipos_pend:
             raise HTTPException(status_code=404, detail="Item not found")
@@ -104,7 +102,7 @@ def get_entregados(db: MySQLConnection = Depends(get_connection)):
 @router.put("/update_perno/{id}")
 def update_perno(id: str, perno: InPernos, db: MySQLConnection = Depends(get_connection) ):
     print("api/perneria/update_perno")
-    print(perno)
+    
     try:
         
         fecha_original = perno.Fecha_llegada
@@ -120,8 +118,6 @@ def update_perno(id: str, perno: InPernos, db: MySQLConnection = Depends(get_con
 
         # Formatear la fecha al formato "DD-MM-YYYY"
         fecha_formateada = fecha_objeto.strftime("%d-%m-%Y")
-
-        print(fecha_formateada)  # Resultado: "01-12-2024"
 
         cursor = db.cursor(dictionary=True)
         queryUpdate = ("""

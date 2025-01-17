@@ -39,7 +39,6 @@ class Pernos_Service:
                 "fila": int(id),
             }
 
-            print(queryUpdate)
             cursor = db.cursor(dictionary=True)
             cursor.execute(queryUpdate)
             pernos_comp = cursor.fetchall()
@@ -47,7 +46,6 @@ class Pernos_Service:
             cursor.close()
         
             # Ejecutar la consulta con parámetros
-            print({"rc": 200})
             return {"rc": 200}
         except Exception as e:
             print(f"Ocurrió un error: {e}")
