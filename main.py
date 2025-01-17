@@ -15,9 +15,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(perneria, prefix="/perneria")
+app.include_router(perneria, prefix="/api/perneria" )
 app.include_router(equipos, prefix="/equipos")
 
-@app.get("/")
+@app.get("/api/control_patio")
 def read_root():
-    return {"message": "Welcome to the FastAPI CRUD application"}
+    return {"message": "Welcome to the Control Patio application BONATi 2025"}

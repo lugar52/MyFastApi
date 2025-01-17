@@ -12,13 +12,7 @@ from config import Settings
 def get_settings():
     return Settings()
 
-def get_connection(settings: Settings = Depends(get_settings)) -> MySQLConnection:
-    print(settings.MYSQLUSER)
-    print(settings.MYSQLPASSWORD)
-    print(settings.MYSQLHOST)
-    print(settings.MYSQLDATABASE)
-    print(settings.MYSQLPORT)
-    
+def get_connection(settings: Settings = Depends(get_settings)) -> MySQLConnection:   
     return mysql.connector.connect(
         host=settings.MYSQLHOST,
         user=settings.MYSQLUSER,
