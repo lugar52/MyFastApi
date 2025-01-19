@@ -104,7 +104,7 @@ def update_perno(id: str, perno: InPernos, db: MySQLConnection = Depends(get_con
     print("api/perneria/update_perno")
     
     try:
-        
+        print(perno)
         fecha_original = perno.Fecha_llegada
 
         # Usar una expresión regular para extraer la fecha
@@ -135,12 +135,14 @@ def update_perno(id: str, perno: InPernos, db: MySQLConnection = Depends(get_con
             WHERE ID_PERNO = %s
             """)
         values = (perno.Tipo_Elemento, perno.Tunel, perno.Disposicion_Final, perno.Cantidad_Terreno, perno.Diferencia, perno.Proveedor, perno.Patio, fecha_formateada, perno.Observacion, int(id))
+
+        print(fecha_formateada)
                                     
         rc = cursor.execute(queryUpdate, values)
 
-        db.commit()
         cursor.close()
-        
+        db.commit()
+
         if cursor.rowcount == 0:
             raise HTTPException(status_code=404, detail="User not found")
         return {"status_code": 200, "message": "User updated successfully"}
