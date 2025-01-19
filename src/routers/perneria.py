@@ -139,6 +139,8 @@ def update_perno(id: str, perno: InPernos, db: MySQLConnection = Depends(get_con
         rc = cursor.execute(queryUpdate, values)
 
         db.commit()
+        cursor.close()
+        
         if cursor.rowcount == 0:
             raise HTTPException(status_code=404, detail="User not found")
         return {"status_code": 200, "message": "User updated successfully"}
@@ -148,5 +150,5 @@ def update_perno(id: str, perno: InPernos, db: MySQLConnection = Depends(get_con
         db.rollback()
         return {"status_code": 503, "message": f"Ocurrió un error: {e}"}
     finally:
-        cursor.close()
+        
         db.close()
