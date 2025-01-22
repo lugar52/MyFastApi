@@ -2,29 +2,26 @@ from fastapi import APIRouter, Depends, HTTPException, status, Request
 from src.database.connection import get_connection
 from mysql.connector import MySQLConnection
 
-from src.models.UpdatePernos import InPernos
-from src.services.queryPerneria import Querys_perneria
-from src.services.pernosService import Pernos_Service
+from src.models.UpdateMateriales import InMaterial
+from src.services.querymateriales import Querys_materiales
 
 import re
 from datetime import datetime
 
 import json
 
-router = APIRouter(tags=["perneria"])
-
-pernosService = Pernos_Service()
+router = APIRouter(tags=["materiales"])
 
 @router.get("/")
 def getS_items(db: MySQLConnection = Depends(get_connection)):
-    print("api/perneria")
+    print("api/materiales")
     try:
         cursor = db.cursor(dictionary=True)
-        query = Querys_perneria.QUERY_PERNERIA
+        query = Querys_materiales.QUERY_MATERIALES
         cursor.execute(query)
-        lst_equipos = cursor.fetchall()
+        lst_materiales = cursor.fetchall()
         
-        return lst_equipos
+        return lst_materiales
     
     except Exception as e:
         print(f"Ocurrió un error: {e}")
@@ -38,8 +35,8 @@ def get_item(id: str, db: MySQLConnection = Depends(get_connection)):
     print("api/get_items")
     try:
         cursor = db.cursor(dictionary=True)
-        query = Querys_perneria.QUERY_PERNERIA
-        query = query + " WHERE ID_PERNO = " + id + ";"
+        query = Querys_materiales.QUERY_MATERIALES
+        query = query + " WHERE ID_cmaterial = " + id + ";"
 
         cursor.execute(query)
         equipo = cursor.fetchall()
@@ -57,10 +54,10 @@ def get_item(id: str, db: MySQLConnection = Depends(get_connection)):
 
 @router.get("/pendientes")
 def get_pendientes(db: MySQLConnection = Depends(get_connection)):
-    print("api/perneria/pendientes")
+    print("api/materiales/pendientes")
     try:
         cursor = db.cursor(dictionary=True)
-        query = Querys_perneria.QUERY_PERNERIA
+        query = Querys_materiales.QUERY_MATERIALES
         query = query + " WHERE DIFERENCIA != 0"
         cursor.execute(query)
         equipos_pend = cursor.fetchall()
@@ -77,12 +74,12 @@ def get_pendientes(db: MySQLConnection = Depends(get_connection)):
         cursor.close()
         db.close()
 
-@router.get("/entregada")
+@router.get("/entregados")
 def get_entregados(db: MySQLConnection = Depends(get_connection)):
-    print("api/perneria/entregada")
+    print("api/materiales/entregados")
     try:
         cursor = db.cursor(dictionary=True)
-        query = Querys_perneria.QUERY_PERNERIA
+        query = Querys_materiales.QUERY_MATERIALES
         query = query + " WHERE DIFERENCIA = 0"
         cursor.execute(query)
         equipos_comp = cursor.fetchall()
@@ -99,13 +96,13 @@ def get_entregados(db: MySQLConnection = Depends(get_connection)):
         cursor.close()
         db.close()
 
-@router.put("/update_perno/{id}")
-def update_perno(id: str, perno: InPernos, db: MySQLConnection = Depends(get_connection) ):
-    print("api/perneria/update_perno")
+@router.put("/update_material/{id}")
+def update_material(id: str, material: InMaterial, db: MySQLConnection = Depends(get_connection) ):
+    print("api/materiales/update_material")
     
     try:
-        print(perno)
-        fecha_original = perno.Fecha_llegada
+        print(material)
+        fecha_original = material.Fecha_llegada
         print(fecha_original)
 
         # Usar una expresión regular para extraer la fecha
@@ -137,9 +134,9 @@ def update_perno(id: str, perno: InPernos, db: MySQLConnection = Depends(get_con
                 PATIO = %s,
                 FECHA_LLEGADA = %s,
                 OBSERVACION= %s
-            WHERE ID_PERNO = %s
+            WHERE ID_cmaterial = %s
             """)
-        values = (perno.Tipo_Elemento, perno.Tunel, perno.Disposicion_Final, perno.Cantidad_Terreno, perno.Diferencia, perno.Proveedor, perno.Patio, fecha_formateada, perno.Observacion, int(id))
+        values = (material.Tipo_Elemento, material.Tunel, material.Disposicion_Final, material.Cantidad_Terreno, material.Diferencia, material.Proveedor, material.Patio, fecha_formateada, material.Observacion, int(id))
 
         print(fecha_formateada)
                                     
@@ -150,7 +147,7 @@ def update_perno(id: str, perno: InPernos, db: MySQLConnection = Depends(get_con
 
         if cursor.rowcount == 0:
             raise HTTPException(status_code=404, detail="User not found")
-        return {"status_code": 200, "message": "Item updated successfully"}
+        return {"status_code": 200, "message": "Material updated successfully"}
     
     except Exception as e:
         print(f"Ocurrió un error: {e}")
