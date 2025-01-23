@@ -55,6 +55,28 @@ def get_item(id: str, db: MySQLConnection = Depends(get_connection)):
         cursor.close()
         db.close()
 
+@router.get("/todos")
+def get_todos(db: MySQLConnection = Depends(get_connection)):
+    print("api/perneria/todos")
+    try:
+        cursor = db.cursor(dictionary=True)
+        query = Querys_perneria.QUERY_PERNERIA
+        
+        cursor.execute(query)
+        equipos_pend = cursor.fetchall()
+        
+        cursor.close()
+        if not equipos_pend:
+            raise HTTPException(status_code=404, detail="Item not found")
+        return equipos_pend
+    
+    except Exception as e:
+        print(f"Ocurrió un error: {e}")
+        return {"status_code": 503, "message": f"Ocurrió un error: {e}"}
+    finally:
+        cursor.close()
+        db.close()
+
 @router.get("/pendientes")
 def get_pendientes(db: MySQLConnection = Depends(get_connection)):
     print("api/perneria/pendientes")
