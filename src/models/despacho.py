@@ -3,7 +3,8 @@ from pydantic import BaseModel
 class Despacho(BaseModel):
     id_perno: int
     Fecha_despacho: str
-    Codigo: int
+    Hora_despacho: str
+    Codigo: str
     descricpcion: str
     snf: str
     stock_Inicial: float
@@ -14,5 +15,6 @@ class Despacho(BaseModel):
     destino: int
     rut_Retira: str
     Nombre_retira: str
-    stock_final: int
     guia: int
+
+

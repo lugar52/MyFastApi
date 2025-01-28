@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from src.routers.perneria import router as perneria
+from src.routers.despachos import router as despachos
 
 app = FastAPI()
 
@@ -15,6 +16,7 @@ app.add_middleware(
 )
 
 app.include_router(perneria, prefix="/api/perneria" )
+app.include_router(despachos, prefix="/api/despachos" )
 
 @app.get("/api/control_patio")
 def read_root():

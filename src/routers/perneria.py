@@ -3,8 +3,11 @@ from src.database.connection import get_connection
 from mysql.connector import MySQLConnection
 
 from src.models.UpdatePernos import InPernos
+from src.models.despacho import Despacho
+
 from src.services.queryPerneria import Querys_perneria
 from src.services.pernosService import Pernos_Service
+from src.models.despacho import Despacho
 
 import re
 from datetime import datetime
@@ -34,8 +37,8 @@ def getS_items(db: MySQLConnection = Depends(get_connection)):
         db.close()
 
 @router.get("/get_item/{id}")
-def get_item(id: str, db: MySQLConnection = Depends(get_connection)):
-    print("api/get_items")
+async def get_item(id: str, db: MySQLConnection = Depends(get_connection)):
+    print("api/perneria/get_items")
     try:
         cursor = db.cursor(dictionary=True)
         query = Querys_perneria.QUERY_PERNERIA
@@ -132,38 +135,41 @@ def update_perno(id: str, perno: InPernos, db: MySQLConnection = Depends(get_con
 
         # Usar una expresión regular para extraer la fecha
         # fecha_extraida = re.match(r"^(.*GMT[+\-]\d{4})", fecha_original).group(1)
-        fecha_extraida = re.match(r"^(.*GMT[+\-]\d{4})", fecha_original).group(1)
-        print(fecha_extraida)
+        # fecha_extraida = re.match(r"^(.*GMT[+\-]\d{4})", fecha_original).group(1)
+        
 
         # Definir el formato de entrada para analizar la fecha (sin la parte extra)
-        formato_entrada = "%a %b %d %Y %H:%M:%S GMT%z"
-        print(formato_entrada)
+        # formato_entrada = "%a %b %d %Y %H:%M:%S GMT%z"
+        # print(formato_entrada)
 
         # Convertir la cadena extraída a un objeto datetime
-        fecha_objeto = datetime.strptime(fecha_extraida, formato_entrada)
-        print(fecha_objeto)
+        # fecha_objeto = datetime.strptime(fecha_extraida, formato_entrada)
+        # print(fecha_objeto)
 
         # Formatear la fecha al formato "DD-MM-YYYY"
-        fecha_formateada = fecha_objeto.strftime("%d-%m-%Y")
+        # fecha_formateada = fecha_objeto.strftime("%d-%m-%Y")
 
         cursor = db.cursor(dictionary=True)
         queryUpdate = ("""
             UPDATE railway.control_perneria
             SET 
-                TIPO_ELEMENTO = %s,
                 TUNEL= %s,
                 DISPOSICION_FINAL = %s,
                 CANTIDAD_TERRENO = %s,
                 DIFERENCIA = %s,
-                PROVEEDOR = %s,
                 PATIO = %s,
                 FECHA_LLEGADA = %s,
-                OBSERVACION= %s
+                OBSERVACION= %s,
+                STOCK= %s,
+                SUB_PATIO= %s,
+                COORDENADAS= %s
             WHERE ID_PERNO = %s
             """)
-        values = (perno.Tipo_Elemento, perno.Tunel, perno.Disposicion_Final, perno.Cantidad_Terreno, perno.Diferencia, perno.Proveedor, perno.Patio, fecha_formateada, perno.Observacion, int(id))
+        values = (perno.Tunel, perno.Disposicion_Final, perno.Cantidad_Terreno, perno.Diferencia, perno.Patio, fecha_original, perno.Observacion, perno.Stock, perno.SubPatio, perno.Coordenada, int(id))
 
-        print(fecha_formateada)
+        print(queryUpdate)
+        print(values)
+        print(fecha_original)
                                     
         rc = cursor.execute(queryUpdate, values)
 
@@ -179,5 +185,6 @@ def update_perno(id: str, perno: InPernos, db: MySQLConnection = Depends(get_con
         db.rollback()
         return {"status_code": 503, "message": f"Ocurrió un error: {e}"}
     finally:
-        
         db.close()
+
+
