@@ -14,18 +14,19 @@ import json
 
 router = APIRouter(tags=[""])
 
-@router.post("/ingresos")
+@router.post("/despacho")
 def despacho(despacho: Despacho, db: MySQLConnection = Depends(get_connection) ):
-    print("api/despachos/ingresos")
+    print("api/movim/despacho")
     
     try:
         print(despacho)
 
         cursor = db.cursor(dictionary=True)
         queryUpdate = ("""
-            call railway.PROC_DESPACHO(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+            call railway.PROC_DESPACHO(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
             """)
         values = (
+            despacho.tipo_movimiento,
             despacho.id_perno,
             despacho.Fecha_despacho,
             despacho.Hora_despacho,
@@ -70,7 +71,7 @@ async def get_Despachos(id: str, db: MySQLConnection = Depends(get_connection)):
     try:
         cursor = db.cursor(dictionary=True)
         query = ("""
-            CALL PROC_DESPACHOS_X_IDPERNO(%s);
+            CALL PROC_GET_MOVIM_X_IDPERNO(%s);
             """)
         values = (id,)
         despachos = cursor.execute(query, values)
@@ -86,3 +87,54 @@ async def get_Despachos(id: str, db: MySQLConnection = Depends(get_connection)):
     finally:
         cursor.close()
         db.close()
+
+
+@router.post("/ingresos")
+def ingresos(ingreso: Despacho, db: MySQLConnection = Depends(get_connection) ):
+    print("api/movim/ingresosssssssssssssssssss")
+    
+    try:
+        print(ingreso)
+
+        cursor = db.cursor(dictionary=True)
+        queryUpdate = ("""
+            call railway.PROC_DESPACHO(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+            """)
+        values = (
+            ingreso.tipo_movimiento,
+            ingreso.id_perno,
+            ingreso.Fecha_despacho,
+            ingreso.Hora_despacho,
+            ingreso.Codigo,
+            ingreso.descricpcion,
+            ingreso.snf,
+            ingreso.stock_Inicial,
+            ingreso.cantidad,
+            ingreso.stock_final,
+            ingreso.peso_despacho,
+            ingreso.lugar_despacho,
+            ingreso.destino,
+            ingreso.rut_Retira,
+            ingreso.Nombre_retira,
+            ingreso.guia
+        )
+
+        print(queryUpdate)
+                                   
+        rc = cursor.execute(queryUpdate, values)
+        print(cursor.rowcount)
+
+        """ cursor.close() """
+        """ db.commit() """
+
+        if cursor.rowcount == 0:
+            return {"status_code": 200, "message": "Item insert successfully"}
+        else:
+            raise HTTPException(status_code=404, detail="User not found")
+    
+    except Exception as e:
+        print(f"Ocurrió un error: {e}")
+        db.rollback()
+        return {"status_code": 503, "message": f"Ocurrió un error: {e}"}
+    finally:
+        db.close()        

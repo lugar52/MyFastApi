@@ -16,7 +16,7 @@ app.add_middleware(
 )
 
 app.include_router(perneria, prefix="/api/perneria" )
-app.include_router(despachos, prefix="/api/despachos" )
+app.include_router(despachos, prefix="/api/movimientos" )
 
 @app.get("/api/control_patio")
 def read_root():

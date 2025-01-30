@@ -167,10 +167,6 @@ def update_perno(id: str, perno: InPernos, db: MySQLConnection = Depends(get_con
             """)
         values = (perno.Tunel, perno.Disposicion_Final, perno.Cantidad_Terreno, perno.Diferencia, perno.Patio, fecha_original, perno.Observacion, perno.Stock, perno.SubPatio, perno.Coordenada, int(id))
 
-        print(queryUpdate)
-        print(values)
-        print(fecha_original)
-                                    
         rc = cursor.execute(queryUpdate, values)
 
         cursor.close()

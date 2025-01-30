@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 
 class Despacho(BaseModel):
+    tipo_movimiento: int
     id_perno: int
     Fecha_despacho: str
     Hora_despacho: str
