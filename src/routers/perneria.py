@@ -183,4 +183,50 @@ def update_perno(id: str, perno: InPernos, db: MySQLConnection = Depends(get_con
     finally:
         db.close()
 
+@router.get("/proveedores")
+def get_entregados(db: MySQLConnection = Depends(get_connection)):
+    print("api/perneria/proveedores")
+    try:
+        cursor = db.cursor(dictionary=True)
+        queryUpdate = ("""
+                select p.ID_PROVEEDOR, p.DESCRIPCION from proveedor p
+                """)
+        
+        cursor.execute(queryUpdate)
+        ls_proveedores = cursor.fetchall()
+        print(ls_proveedores)
 
+        cursor.close()
+        if not ls_proveedores:
+            raise HTTPException(status_code=404, detail="Item not found")
+        return ls_proveedores
+    
+    except Exception as e:
+        print(f"Ocurrió un error: {e}")
+        return {"status_code": 503, "message": f"Ocurrió un error: {e}"}
+    finally:
+        db.close()
+
+@router.get("/proveedor/{id}")
+def get_proveedor(id: str, db: MySQLConnection = Depends(get_connection)):
+    print("api/perneria/proveedor")
+    try:
+        cursor = db.cursor(dictionary=True)
+        query = Querys_perneria.QUERY_PERNERIA
+        query = query + " WHERE PROVEEDOR = %s"
+        values = (id,)
+
+        cursor.execute(query, values)
+        equipos_pend = cursor.fetchall()
+
+        cursor.close()
+        if not equipos_pend:
+            raise HTTPException(status_code=404, detail="Item not found")
+        return equipos_pend
+    
+    except Exception as e:
+        print(f"Ocurrió un error: {e}")
+        return {"status_code": 503, "message": f"Ocurrió un error: {e}"}
+    finally:
+        cursor.close()
+        db.close()
