@@ -13,6 +13,7 @@ def get_settings():
     return Settings()
 
 def get_connection(settings: Settings = Depends(get_settings)) -> MySQLConnection:   
+    print(settings.MYSQLHOST)
     return mysql.connector.connect(
         host=settings.MYSQLHOST,
         user=settings.MYSQLUSER,
@@ -20,5 +21,3 @@ def get_connection(settings: Settings = Depends(get_settings)) -> MySQLConnectio
         database=settings.MYSQLDATABASE,
         port=settings.MYSQLPORT,
     )
-
-

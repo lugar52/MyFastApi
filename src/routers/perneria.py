@@ -3,11 +3,8 @@ from src.database.connection import get_connection
 from mysql.connector import MySQLConnection
 
 from src.models.UpdatePernos import InPernos
-from src.models.despacho import Despacho
 
 from src.services.queryPerneria import Querys_perneria
-from src.services.pernosService import Pernos_Service
-from src.models.despacho import Despacho
 
 import re
 from datetime import datetime
@@ -15,8 +12,6 @@ from datetime import datetime
 import json
 
 router = APIRouter(tags=["perneria"])
-
-pernosService = Pernos_Service()
 
 @router.get("/")
 def getS_items(db: MySQLConnection = Depends(get_connection)):

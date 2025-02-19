@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from src.routers.perneria import router as perneria
 from src.routers.despachos import router as despachos
+from src.routers.login import router as login
 
 app = FastAPI()
 
@@ -15,6 +16,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.include_router(login, prefix="/api/acceso" )
 app.include_router(perneria, prefix="/api/perneria" )
 app.include_router(despachos, prefix="/api/movimientos" )
 

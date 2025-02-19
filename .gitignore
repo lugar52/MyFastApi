@@ -3,5 +3,8 @@ __pycache__
 Fastapi_env/
 Fastapi_env/*
 
+venv
+
+.gitignore
 .env
 .env.sample
