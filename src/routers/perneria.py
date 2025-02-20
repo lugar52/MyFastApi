@@ -225,3 +225,29 @@ def get_proveedor(id: str, db: MySQLConnection = Depends(get_connection)):
     finally:
         cursor.close()
         db.close()
+
+@router.get("/materiales/{prov}/{cond}")
+async def get_Despachos(prov: str, cond: str, db: MySQLConnection = Depends(get_connection)):
+    print("materiales")
+    print(prov)
+    print(cond)
+
+    try:
+        cursor = db.cursor(dictionary=True)
+        query = ("""
+            CALL PROC_QUERY_PERNERIA(%s, %s);
+            """)
+        values = (prov, cond,)
+        despachos = cursor.execute(query, values)
+        despachos = cursor.fetchall()
+        
+        if not despachos:
+            raise HTTPException(status_code=404, detail="Item not found")
+        return despachos
+    
+    except Exception as e:
+        print(f"Ocurrió un error: {e}")
+        return {"status_code": 503, "message": f"Ocurrió un error: {e}"}
+    finally:
+        cursor.close()
+        db.close()        
