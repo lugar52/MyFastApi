@@ -81,7 +81,7 @@ def get_pendientes(db: MySQLConnection = Depends(get_connection)):
     try:
         cursor = db.cursor(dictionary=True)
         query = Querys_perneria.QUERY_PERNERIA
-        query = query + " WHERE DIFERENCIA < 0"
+        query = query + " WHERE DIFERENCIA <= 0"
         cursor.execute(query)
         equipos_pend = cursor.fetchall()
         
@@ -103,7 +103,7 @@ def get_entregados(db: MySQLConnection = Depends(get_connection)):
     try:
         cursor = db.cursor(dictionary=True)
         query = Querys_perneria.QUERY_PERNERIA
-        query = query + " WHERE DIFERENCIA >= 0"
+        query = query + " WHERE DIFERENCIA > 0"
         cursor.execute(query)
         equipos_comp = cursor.fetchall()
 
