@@ -17,7 +17,7 @@ class Auth():
 
     # Verificar si se obtuvo correctamente
     if secret:
-        print(f"Secreto cargado: {secret}")
+        print(f"Secreto cargado: ")
     else:
         print("Error: APP_SECRET_STRING no está definido")
 

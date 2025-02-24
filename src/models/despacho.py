@@ -17,5 +17,8 @@ class Despacho(BaseModel):
     rut_Retira: str
     Nombre_retira: str
     guia: int
+    lugar_descripcion: str
+    destino_descripcion: str
+    proveedor: int
 
 
