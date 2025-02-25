@@ -99,7 +99,7 @@ def ingresos(ingreso: Despacho, db: MySQLConnection = Depends(get_connection) ):
 
         cursor = db.cursor(dictionary=True)
         queryUpdate = ("""
-            call railway.PROC_DESPACHO(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+            call railway.PROC_DESPACHO(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
             """)
         values = (
             ingreso.tipo_movimiento,
@@ -117,7 +117,8 @@ def ingresos(ingreso: Despacho, db: MySQLConnection = Depends(get_connection) ):
             ingreso.destino,
             ingreso.rut_Retira,
             ingreso.Nombre_retira,
-            ingreso.guia
+            ingreso.guia,
+            ingreso.proveedor
         )
 
         print(queryUpdate)
